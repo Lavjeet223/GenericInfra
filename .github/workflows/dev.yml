@@ -49,13 +49,13 @@ jobs:
       working-directory: environment/dev
       run: terraform plan -no-color -input=false -out=tfplan.out
 
-    - name: Terraform Show Plan Output
+    - name: Terraform Plan
       working-directory: environment/dev
-      run: terraform show -no-color tfplan.out
+      run: terraform plan
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
       working-directory: environment/dev
-      run: terraform apply -auto-approve tfplan.out
+      run: terraform apply -auto-approve
           
     

@@ -1,0 +1,44 @@
+name: UK_Dev_App_TodoApp_01
+
+on:
+  push:
+    branches:
+      - main
+      - 'releases/**'
+jobs:
+  Terraform_Init_Job:
+    name: Terraform Init Job
+    runs-on: self-hosted
+    steps:
+    - name: terraform init task 
+      run: terraform init
+    
+  Terraform_fmt_job:
+    name: Terraform fmt Job
+    runs-on: self-hosted
+    steps:
+    - name: terraform fmt task 
+      run: terraform fmt
+      
+  Terraform_Validate_job:
+    name: Terraform Validate Job
+    runs-on: self-hosted
+    steps:
+    - name: terraform validate task 
+      run: terraform validate
+          
+  Terraform_Plan_Job:
+    name: Terraform Plan Job
+    runs-on: self-hosted
+    steps:
+    - name: terraform plan task 
+      run: terraform plan
+          
+  Terraform_Apply_Job:
+    name: Terraform Apply Job
+    runs-on: self-hosted
+    steps:
+    - name: terraform apply task 
+      run: terraform apply -auto-approve
+          
+    

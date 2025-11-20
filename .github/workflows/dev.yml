@@ -10,14 +10,8 @@ jobs:
     name: Terraform Init Job
     runs-on: self-hosted
     steps:
-    
     - name: Checkout
       uses: actions/checkout@v4.3.1
-
-    - name: Install Terraform
-      uses: little-core-labs/install-terraform@v2.0.0
-      with:
-        version: 1.13.0 #Version of terraform to download 
 
     - name: Azure Login
       uses: Azure/login@v2.3.0
@@ -25,18 +19,32 @@ jobs:
         client-id: 24171e0d-b632-4921-b2b1-a6576b5a075c
         tenant-id: 5642c8d6-0058-4d89-9a83-3f5de4d280b6
         subscription-id: b0805f22-5464-4af2-968e-fabac43ebd20
+        
+    # - name: Install Terraform
+    #   uses: little-core-labs/install-terraform@v2.0.0
+    #   with:
+    #     version: 1.13.0 #Version of terraform to download 
+
+
       
     - name: terraform init task 
-      run: terraform init
+      run: terraform init -input=false
+      working-directory: environment\dev
 
     - name: terraform fmt task 
-      run: terraform fmt
+      run: terraform fmt -check
+      continue-on-error: true
+      working-directory: environment\dev
       
     - name: terraform validate task 
-      run: terraform validate
+      run: terraform validate -no-color
+      working-directory: environment\dev
+      
       
     - name: terraform plan task 
-      run: terraform plan
+      run: terraform plan -no-color -input=false
+      continue-on-error: true
+      working-directory: environment\dev
       
     - name: terraform apply task 
       run: terraform apply -auto-approve

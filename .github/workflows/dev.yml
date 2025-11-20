@@ -47,7 +47,7 @@ jobs:
 
     - name: Terraform Plan
       working-directory: environment/dev
-      run: terraform plan -no-color -input=false -out=tfplan.out
+      run: terraform plan -no-color -input=false
       continue-on-error: true
 
 

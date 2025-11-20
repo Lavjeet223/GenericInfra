@@ -37,12 +37,12 @@ jobs:
 
     - name: Terraform Fmt
       working-directory: environment/dev
-      run: terraform fmt -check
-      continue-on-error: true
+      run: terraform fmt
+      # continue-on-error: true
 
     - name: Terraform Validate
       working-directory: environment/dev
-      run: terraform validate -no-color
+      run: terraform validate  #-no-color
 
     - name: Terraform Plan
       working-directory: environment/dev

@@ -31,26 +31,30 @@ jobs:
 
 
       
-    - name: terraform init task 
+    - name: Terraform Init
+      working-directory: environment/dev
       run: terraform init -input=false
-      working-directory: environment\dev
 
-    - name: terraform fmt task 
+    - name: Terraform Fmt
+      working-directory: environment/dev
       run: terraform fmt -check
       continue-on-error: true
-      working-directory: environment\dev
-      
-    - name: terraform validate task 
+
+    - name: Terraform Validate
+      working-directory: environment/dev
       run: terraform validate -no-color
-      working-directory: environment\dev
-      
-      
-    - name: terraform plan task 
-      run: terraform plan -no-color -input=false
-      continue-on-error: true
-      working-directory: environment\dev
-      
-    - name: terraform apply task 
-      run: terraform apply -auto-approve
+
+    - name: Terraform Plan
+      working-directory: environment/dev
+      run: terraform plan -no-color -input=false -out=tfplan.out
+
+    - name: Terraform Show Plan Output
+      working-directory: environment/dev
+      run: terraform show -no-color tfplan.out
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      working-directory: environment/dev
+      run: terraform apply -auto-approve tfplan.out
           
     

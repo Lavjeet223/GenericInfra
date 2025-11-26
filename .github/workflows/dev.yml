@@ -21,16 +21,16 @@ jobs:
     - name: Azure Login
       uses: Azure/login@v2.3.0
       with:
-        client-id: 7e2ab7b7-de36-40d2-98ab-5e57c5dc70e5 #${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: 5642c8d6-0058-4d89-9a83-3f5de4d280b6 #${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: b0805f22-5464-4af2-968e-fabac43ebd20 #${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
-    # - name: Set Terraform OIDC environment variables
-    #   run: |
-    #     echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
-    #     echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
-    #     echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
-    #     echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+    - name: Set Terraform OIDC environment variables
+      run: |
+        echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
+        echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
     
         
      
@@ -69,9 +69,9 @@ jobs:
     - name: Azure Login
       uses: Azure/login@v2.3.0
       with:
-        client-id: 7e2ab7b7-de36-40d2-98ab-5e57c5dc70e5 #${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: 5642c8d6-0058-4d89-9a83-3f5de4d280b6 #${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: b0805f22-5464-4af2-968e-fabac43ebd20 #${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
      
     - name: Terraform Init

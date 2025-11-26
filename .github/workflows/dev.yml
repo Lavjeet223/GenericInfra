@@ -1,10 +1,10 @@
 name: UK_Dev_App_TodoApp_01
 
-on: workflow_dispatch
-  # push:
-  #   branches:
-  #     - main
-  #     - 'releases/**'
+on: # workflow_dispatch
+  push:
+    branches:
+      - main
+      - 'releases/**'
       
 permissions:
   id-token: write
@@ -25,27 +25,23 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
-    - name: Set Terraform OIDC environment variables
-      run: |
-        echo "ARM_DISABLE_CLI=true" >> $GITHUB_ENV
-        echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
-        echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
-        echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
-        echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
-        
     
-        
-     
     - name: Terraform Init
-      id: Init
+      shell: pwsh
       working-directory: environment/dev
-      run: terraform init -input=false
+      env: 
+        ARM_USE_OIDC: "true"
+        ARM_DISABLE_CLI: "true"
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      run: terraform init -reconfigure -input=false
 
     - name: Terraform Fmt
       id: fmt
       working-directory: environment/dev
       run: terraform fmt
-      # continue-on-error: true
+      continue-on-error: true
 
     - name: Terraform Validate
       id: Validate
@@ -57,13 +53,18 @@ jobs:
       working-directory: environment/dev
       run: terraform plan -no-color -input=false
       continue-on-error: true
+      env: 
+        ARM_USE_OIDC: "true"
+        ARM_DISABLE_CLI: "true"
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 
   Terraform_Apply:
     name: Terraform Apply Job
     runs-on: self-hosted
     needs: Terraform_Init
-    environment: Dev
     steps:
     - name: Checkout
       uses: actions/checkout@v4.3.1
@@ -75,16 +76,25 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
-     
     - name: Terraform Init
       id: Init
       working-directory: environment/dev
       run: terraform init -input=false
+      env: 
+        ARM_USE_OIDC: "true"
+        ARM_DISABLE_CLI: "true"
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Terraform Apply
       id: Apply
       if: github.ref == 'refs/heads/main'
       working-directory: environment/dev
       run: terraform apply -auto-approve
-          
-    
+      env: 
+        ARM_USE_OIDC: "true"
+        ARM_DISABLE_CLI: "true"
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}

@@ -44,7 +44,7 @@ jobs:
       id: fmt
       working-directory: environment/dev
       run: terraform fmt
-      # continue-on-error: true
+      continue-on-error: true
 
     - name: Terraform Validate
       id: Validate

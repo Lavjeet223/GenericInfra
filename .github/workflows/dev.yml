@@ -1,10 +1,10 @@
 name: UK_Dev_App_TodoApp_01
 
-on: #workflow_dispatch
-  push:
-    branches:
-      - main
-      - 'releases/**'
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - main
+  #     - 'releases/**'
       
 permissions:
   id-token: write

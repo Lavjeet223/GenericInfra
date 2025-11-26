@@ -22,7 +22,7 @@ jobs:
     - name: Terraform Init
       id: Init
       working-directory: environment/dev
-      run: terraform init -input=false
+      run: terraform init -reconfigure -input=false
 
     - name: Terraform Fmt
       id: fmt

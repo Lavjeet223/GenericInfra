@@ -19,4 +19,52 @@ jobs:
         tenant-id: 5642c8d6-0058-4d89-9a83-3f5de4d280b6
         subscription-id: b0805f22-5464-4af2-968e-fabac43ebd20
     
-        
+    - name: Terraform Init
+      id: Init
+      working-directory: environment/dev
+      run: terraform init -input=false
+
+    - name: Terraform Fmt
+      id: fmt
+      working-directory: environment/dev
+      run: terraform fmt
+      # continue-on-error: true
+
+    - name: Terraform Validate
+      id: Validate
+      working-directory: environment/dev
+      run: terraform validate -no-color
+
+    - name: Terraform Plan
+      id: Plan
+      working-directory: environment/dev
+      run: terraform plan -no-color -input=false
+      continue-on-error: true
+
+
+  Terraform_Apply:
+    name: Terraform Apply Job
+    runs-on: self-hosted
+    needs: Terraform_Init
+    environment: Dev
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.3.1
+
+    - name: Azure Login
+      uses: Azure/login@v2.3.0
+      with:
+        client-id: 5188b71c-c65e-44f8-bcf6-e138f75658f8
+        tenant-id: 5642c8d6-0058-4d89-9a83-3f5de4d280b6
+        subscription-id: b0805f22-5464-4af2-968e-fabac43ebd20
+
+    - name: Terraform Init
+      id: Init
+      working-directory: environment/dev
+      run: terraform init -input=false
+
+    - name: Terraform Apply
+      id: Apply
+      if: github.ref == 'refs/heads/main'
+      working-directory: environment/dev
+      run: terraform apply -auto-approve

@@ -1,10 +1,10 @@
 name: UK_Dev_App_TodoApp_01
 
-on:
-  push:
-    branches:
-      - main
-      - 'releases/**'
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - main
+  #     - 'releases/**'
 permissions:
   id-token: write
   contents: read
@@ -26,6 +26,7 @@ jobs:
         
      
     - name: Terraform Init
+      id: Init
       working-directory: environment/dev
       run: terraform init -input=false
 
@@ -36,16 +37,19 @@ jobs:
       # continue-on-error: true
 
     - name: Terraform Validate
+      id: Validate
       working-directory: environment/dev
-      run: terraform validate  #-no-color
+      run: terraform validate -no-color
 
     - name: Terraform Plan
+      id: Plan
       working-directory: environment/dev
       run: terraform plan -no-color -input=false
       continue-on-error: true
 
 
     - name: Terraform Apply
+      id: Apply
       if: github.ref == 'refs/heads/main'
       working-directory: environment/dev
       run: terraform apply -auto-approve

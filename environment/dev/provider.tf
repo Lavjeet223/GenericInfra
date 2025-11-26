@@ -10,8 +10,8 @@ terraform {
     storage_account_name = "backendstg112233"
     container_name       = "tfstate"
     key                  = "dev.terraform.tfstate"
-
-
+   }
+}
 
 provider "azurerm" {
   features {}

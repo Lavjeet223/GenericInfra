@@ -32,12 +32,12 @@ jobs:
     - name: Terraform Init
       shell: pwsh
       working-directory: environment/dev
-      env: dev1
-    #     ARM_USE_OIDC: "true"
-    #     ARM_DISABLE_CLI: "true"
-    #     ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-    #     ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-    #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      env: 
+        ARM_USE_OIDC: "true"
+        ARM_DISABLE_CLI: "true"
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       run: terraform init -reconfigure -input=false
 
     - name: Terraform Fmt
@@ -53,17 +53,21 @@ jobs:
 
     - name: Terraform Plan
       id: Plan
-      env: dev1
       working-directory: environment/dev
       run: terraform plan -no-color -input=false
       continue-on-error: true
+      env: 
+        ARM_USE_OIDC: "true"
+        ARM_DISABLE_CLI: "true"
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 
   Terraform_Apply:
     name: Terraform Apply Job
     runs-on: self-hosted
     needs: Terraform_Init
-    environment: Dev
     steps:
     - name: Checkout
       uses: actions/checkout@v4.3.1
@@ -79,9 +83,21 @@ jobs:
       id: Init
       working-directory: environment/dev
       run: terraform init -input=false
+      env: 
+        ARM_USE_OIDC: "true"
+        ARM_DISABLE_CLI: "true"
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Terraform Apply
       id: Apply
       if: github.ref == 'refs/heads/main'
       working-directory: environment/dev
       run: terraform apply -auto-approve
+      env: 
+        ARM_USE_OIDC: "true"
+        ARM_DISABLE_CLI: "true"
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}

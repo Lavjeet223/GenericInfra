@@ -54,6 +54,7 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
       working-directory: environment/dev
+      
       run: terraform apply -auto-approve
           
     

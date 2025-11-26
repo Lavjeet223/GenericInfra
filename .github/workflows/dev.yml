@@ -1,10 +1,10 @@
 name: UK_Dev_App_TodoApp_01
 
-on:
-  push:
-    branches:
-      - main
-      - 'releases/**'
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - main
+  #     - 'releases/**'
 permissions:
   id-token: write
   contents: read
@@ -20,9 +20,9 @@ jobs:
     - name: Azure Login
       uses: Azure/login@v2.3.0
       with:
-        client-id: 24171e0d-b632-4921-b2b1-a6576b5a075c
-        tenant-id: 5642c8d6-0058-4d89-9a83-3f5de4d280b6
-        subscription-id: b0805f22-5464-4af2-968e-fabac43ebd20
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
     # - name: Install Terraform
     #   uses: little-core-labs/install-terraform@v2.0.0

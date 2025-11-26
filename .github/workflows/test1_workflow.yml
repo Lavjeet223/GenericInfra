@@ -22,7 +22,6 @@ jobs:
     
     - name: Debug OIDC Environment Vars
       shell: pwsh
-      working-directory: environment/dev
       run: |
         echo "ARM_USE_OIDC: $env:ARM_USE_OIDC"
         echo "ARM_DISABLE_CLI: $env:ARM_DISABLE_CLI"
@@ -32,6 +31,7 @@ jobs:
 
     - name: Terraform Init
       shell: pwsh
+      working-directory: environment/dev
       env:
         ARM_USE_OIDC: "true"
         ARM_DISABLE_CLI: "true"

@@ -22,28 +22,28 @@ jobs:
 
     - name: terraform init
       id: Init
-      working-directory: environment/backend
+      working-directory: backend
       run: terraform init -input=false
 
     - name: terraform fmt
       id: fmt
-      working-directory: environment/backend
+      working-directory: backend
       run: terraform fmt
     #   continue-on-error: true
 
     - name: terraform validate
       id: Validate
-      working-directory: environment/backend
+      working-directory: backend
       run: terraform validate -no-color
 
     - name: terraform plan
       id: Plan
-      working-directory: environment/backend
+      working-directory: backend
       run: terraform plan -no-color -input=false
       continue-on-error: true
 
     - name: terraform apply
       id: Apply
       if: github.ref == 'refs/heads/main'
-      working-directory: environment/backend
+      working-directory: backend
       run: terraform apply -auto-approve
